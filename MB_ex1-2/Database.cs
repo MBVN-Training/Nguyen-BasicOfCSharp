@@ -21,32 +21,38 @@ public class Database
         }
         return _instance;
     }
-
     public List<LibraryItem> GetLibraryItems(){
         return _libraryItems;
     }
-
     public List<Book> GetAllBooks()
     {
         return _libraryItems.OfType<Book>().ToList();
     }
-
     public List<Dvd> GetDVDPublicationIn2022()
     {
         return _libraryItems.OfType<Dvd>().Where(item=> item.PublicationDate.Year == 2022).ToList();
     }
-
     public List<Borrower> GetBorrowersBorrowBothBookAndDvd()
     {
-        //get borrower borrow book
-        var BookBorrower= _libraryItems.OfType<Book>()
-            .Join(_borrowingHistories, book => book.Id, history => history.IdItem,
-                (book, history) => history.BorrowerLibraryCardNumber).Distinct();
-        //get borrower borrow dvd
-        var borrowDvd = _libraryItems.OfType<Dvd>().Join(_borrowingHistories, dvd => dvd.Id, history => history.IdItem, (dvd, history) => history.BorrowerLibraryCardNumber).Distinct();
-        //return list of borrower borrow both book and dvd
-        var result = BookBorrower.Intersect(borrowDvd).Join(_borrowers, borrower => borrower, borrower => borrower.LibraryCardNumber, (borrower, borrower1) => borrower1);
-        return result.ToList();
+        // Create a set of borrowers who borrowed books
+        var bookBorrowers = new HashSet<int?>(
+            _borrowingHistories.Where(history => _libraryItems.OfType<Book>().Any(book => book.Id == history.IdItem))
+                .Select(history => history.BorrowerLibraryCardNumber)
+        );
+
+        // Create a set of borrowers who borrowed DVDs
+        var dvdBorrowers = new HashSet<int?>(
+            _borrowingHistories.Where(history => _libraryItems.OfType<Dvd>().Any(dvd => dvd.Id == history.IdItem))
+                .Select(history => history.BorrowerLibraryCardNumber)
+        );
+
+        // Intersect the two sets to get borrowers who borrowed both
+        var commonBorrowers = bookBorrowers.Intersect(dvdBorrowers);
+
+        // Return the borrowers who borrowed both books and DVDs
+        var result = _borrowers.Where(borrower => commonBorrowers.Contains(borrower.LibraryCardNumber)).ToList();
+
+        return result;
     }
     public List<Borrower> GetBorrowers(){
         return _borrowers;

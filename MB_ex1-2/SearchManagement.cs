@@ -46,7 +46,7 @@ public class SearchManagement:Management
         var borrower = _db.GetBorrowersBorrowBothBookAndDvd();
         Console.WriteLine("Borrower borrow both book and DVD");
         Console.WriteLine("Number of borrowers: "+borrower.Count);
-        ShowItemsInfo(borrower.Cast<object>().ToList());
+        ShowItemsInfo(borrower.ToList());
     }
 
     private void DVDPublicationIn2022()
@@ -54,16 +54,16 @@ public class SearchManagement:Management
         var items = _db.GetDVDPublicationIn2022();
         Console.WriteLine("DVD publication in 2022");
         Console.WriteLine("Number of DVD: "+items.Count);
-        ShowItemsInfo(items.Cast<object>().ToList());
+        ShowItemsInfo(items.ToList());
     }
 
     private void SortBookByTitle()
     {
-        ShowItemsInfo(_db.GetAllBooks().OrderBy(item=>item.Title).Cast<object>().ToList());
+        ShowItemsInfo(_db.GetAllBooks().OrderBy(item=>item.Title).ToList());
     }
 
     private void GetAllBooks()
     {
-        ShowItemsInfo(_db.GetAllBooks().OrderBy(item=>item.PublicationDate).Cast<object>().ToList());
+        ShowItemsInfo(_db.GetAllBooks().OrderBy(item=>item.PublicationDate).ToList());
     }
 }

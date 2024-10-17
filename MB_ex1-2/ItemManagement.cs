@@ -74,26 +74,26 @@ public class ItemManagement: Management
         string author = Console.ReadLine().Trim();
         
         var listItem = _db.SearchLibraryItems(id, title, author);
-        ShowItemsInfo(listItem.Cast<object>().ToList());
+        ShowItemsInfo(listItem.ToList());
     }
 
     private void ListBorrowedItems()
     {
         var list = _db.GetBorrowedLibaryItems();
-        ShowItemsInfo(list.Cast<object>().ToList());
+        ShowItemsInfo(list.ToList());
     }
 
     private void ListAvailableItems()
     {
         var listItem = _db.GetAvailableLibaryItems();
-        ShowItemsInfo(listItem.Cast<object>().ToList());
+        ShowItemsInfo(listItem.ToList());
     }
 
     private void ListItems()
     {
         Console.Clear();
         var listItem = _db.GetLibraryItems();
-        ShowItemsInfo(listItem.Cast<object>().ToList());
+        ShowItemsInfo(listItem.ToList());
         
     }
     
@@ -160,6 +160,7 @@ public class ItemManagement: Management
         }
         if(action == "add")
         {
+            ChoseType:
             Console.Write("Type(1.Book, 2.DVD, 3.Magazine):");
             int type = int.Parse(Console.ReadLine().Trim());
             LibraryItem item = null;
@@ -179,6 +180,9 @@ public class ItemManagement: Management
                 case 3:
                     item = new Magazine(title, author, publicationDate);
                     break;
+                default:
+                    Console.Clear();
+                    goto ChoseType;
             }
 
             return item;

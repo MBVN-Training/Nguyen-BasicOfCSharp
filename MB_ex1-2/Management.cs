@@ -12,7 +12,7 @@ public abstract class Management
         Console.ReadKey();
         Console.Clear();
     }
-    protected static void ShowItemsInfo(List<Object> items)
+    protected static void ShowItemsInfo<T>(List<T> items)
     {
         foreach (var item in items)
         {

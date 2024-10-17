@@ -48,13 +48,13 @@ public class BorrowManagement: Management
     private void ShowBorrowers()
     {
         var borrowers= _db.GetBorrowers();
-        ShowItemsInfo(borrowers.Cast<Object>().ToList());
+        ShowItemsInfo(borrowers.ToList());
     }
 
     private void ShowHistory()
     {
         var histories = _db.GetBorrowingHistories();
-        ShowItemsInfo(histories.OrderBy(histories=>histories.BorrowerLibraryCardNumber).Cast<Object>().ToList());
+        ShowItemsInfo(histories.OrderBy(histories=>histories.BorrowerLibraryCardNumber).ToList());
     }
 
     private void ReturnItem()
@@ -73,7 +73,7 @@ public class BorrowManagement: Management
         int libraryCardNumber = int.Parse(Console.ReadLine().Trim());
         Console.WriteLine("list available items:");
         var listItem = _db.GetAvailableLibaryItems();
-        ShowItemsInfo(listItem.Cast<object>().ToList());
+        ShowItemsInfo(listItem.ToList());
         Console.WriteLine("Enter the item id:");
         Guid itemId = Guid.Parse(Console.ReadLine().Trim());
         _db.BorrowItem(itemId, libraryCardNumber, DateTime.Now);
