@@ -1,3 +1,4 @@
+using System.Globalization;
 using MB_ex1.Entity;
 
 namespace MB_ex1;
@@ -148,11 +149,12 @@ public class ItemManagement: Management
         string title = Console.ReadLine().Trim();
         Console.Write("Author:");
         string author = Console.ReadLine().Trim();
-        Console.Write("Publication date:");
+        Console.Write("Publication date(dd/MM/yyyy):");
         DateTime publicationDate = DateTime.Now;
         try
         {
-            publicationDate = DateTime.Parse(Console.ReadLine().Trim());
+            publicationDate = DateTime.Parse(Console.ReadLine().Trim(),
+                new DateTimeFormatInfo(){ShortDatePattern = "dd/MM/yyyy"});
         }
         catch (Exception e)
         {

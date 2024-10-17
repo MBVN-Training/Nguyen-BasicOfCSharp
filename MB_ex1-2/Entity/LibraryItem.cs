@@ -20,7 +20,7 @@ public class LibraryItem
 
     public override string ToString()
     {
-        return ("Id: " + Id + " Title: " + Title + " Author: " + Author + " Publication date: " + PublicationDate + " Is Borrowed: " + IsBorrowed);
+        return ("Id: " + Id + " Title: " + Title + " Author: " + Author + " Publication date: " + PublicationDate.ToString("d") + " Is Borrowed: " + IsBorrowed);
     }
     
     // Method to copy properties from another LibraryItem

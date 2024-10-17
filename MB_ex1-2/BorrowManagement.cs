@@ -4,7 +4,6 @@ namespace MB_ex1;
 
 public class BorrowManagement: Management
 {
-    private Database _db = Database.GetInstance();
     public override void ShowMenu()
     {
         Console.WriteLine("1. Borrow an item");

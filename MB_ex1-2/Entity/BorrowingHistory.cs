@@ -18,6 +18,6 @@ public class BorrowingHistory
 
     public override string ToString()
     {
-        return ("BorrowHistoryID: "+Id+" BorrowerLibraryCardNumber: "+BorrowerLibraryCardNumber+" BorrowDate: "+BorrowDate+" ReturnDate: "+ReturnDate+" IdItem: "+IdItem);
+        return ("BorrowHistoryID: "+Id+" BorrowerLibraryCardNumber: "+BorrowerLibraryCardNumber+" BorrowDate: "+BorrowDate?.ToString("d")+" ReturnDate: "+ReturnDate?.ToString("d")+" IdItem: "+IdItem);
     }
 }
