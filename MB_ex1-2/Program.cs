@@ -11,6 +11,7 @@ internal class Program
         var searchManagement = new SearchManagement();
         while (true)
         {
+            Console.WriteLine("Library Management System");
             Console.WriteLine("1. Item management");
             Console.WriteLine("2. Borrow management");
             Console.WriteLine("3. Search Management");

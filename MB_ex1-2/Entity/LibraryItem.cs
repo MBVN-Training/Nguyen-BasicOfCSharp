@@ -14,7 +14,7 @@ public class LibraryItem
         Title = title;
         Author = author;
         PublicationDate = publicationDate;
-        IsBorrowed = _random.Next(0, 2) == 0;
+        IsBorrowed = _random.Next(0, 3) != 0;
 
     }
 
@@ -35,5 +35,4 @@ public class LibraryItem
     public void Return(){
         IsBorrowed = false;
     }
-
 }

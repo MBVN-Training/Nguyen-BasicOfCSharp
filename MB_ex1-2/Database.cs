@@ -26,9 +26,27 @@ public class Database
         return _libraryItems;
     }
 
-    public List<LibraryItem> GetAllBooks()
+    public List<Book> GetAllBooks()
     {
-        return _libraryItems.FindAll(item => item.GetType() == typeof(Book));
+        return _libraryItems.OfType<Book>().ToList();
+    }
+
+    public List<Dvd> GetDVDPublicationIn2022()
+    {
+        return _libraryItems.OfType<Dvd>().Where(item=> item.PublicationDate.Year == 2022).ToList();
+    }
+
+    public List<Borrower> GetBorrowersBorrowBothBookAndDvd()
+    {
+        //get borrower borrow book
+        var BookBorrower= _libraryItems.OfType<Book>()
+            .Join(_borrowingHistories, book => book.Id, history => history.IdItem,
+                (book, history) => history.BorrowerLibraryCardNumber).Distinct();
+        //get borrower borrow dvd
+        var borrowDvd = _libraryItems.OfType<Dvd>().Join(_borrowingHistories, dvd => dvd.Id, history => history.IdItem, (dvd, history) => history.BorrowerLibraryCardNumber).Distinct();
+        //return list of borrower borrow both book and dvd
+        var result = BookBorrower.Intersect(borrowDvd).Join(_borrowers, borrower => borrower, borrower => borrower.LibraryCardNumber, (borrower, borrower1) => borrower1);
+        return result.ToList();
     }
     public List<Borrower> GetBorrowers(){
         return _borrowers;
@@ -51,7 +69,6 @@ public class Database
         if (itemInLibrary is not null) throw new Exception("Item already exists in library");
         _libraryItems.Add(item);
         return;
-
     }
     public void UpdateLibraryItem(LibraryItem item){
         var itemInLibrary = GetItemInLibrary(item.Id);
@@ -72,7 +89,6 @@ public class Database
         if(!IsInLibrary(idItem))
             throw new Exception("Item not in library");
         
-        
         if(!_borrowers.Exists(borrower => borrower.LibraryCardNumber == borrowerLibraryCardNumber))
             throw new Exception("Borrower not found");
         else
@@ -84,7 +100,6 @@ public class Database
             item.Borrow();
             _borrowingHistories.Add(new BorrowingHistory( idItem, borrowerLibraryCardNumber, borrowDate));
         }
-    
     }
     public void ReturnItem(Guid idItem, int borrowerLibraryCardNumber, DateTime returnDate){
         if(!IsInLibrary(idItem))
@@ -110,13 +125,13 @@ public class Database
     {
         return _libraryItems.FindAll(item=> item.Title.Contains(title)|| item.Author.Contains(author) || item.Id.ToString().Contains(id));
     }
-//seed data
+////seed data
     private void SeedData(){
         _libraryItems = new List<LibraryItem>();
         _borrowers = new List<Borrower>();
         _borrowingHistories = new List<BorrowingHistory>();
         int numberOfItems = 10;
-        int numberOfBorrowers = 10;
+        int numberOfBorrowers = 5;
         for(int i = 0; i < numberOfItems; i++){
             int index =_libraryItems.Count+1;
             DateTime date = new DateTime(2022, 1, 1);
@@ -138,6 +153,5 @@ public class Database
                 _borrowingHistories.Add(new BorrowingHistory(item.Id.Value, _borrowers[_random.Next(0,_borrowers.Count)].LibraryCardNumber.Value, DateTime.Now.AddDays(_random.Next(-50,50))));
             }
         }
-        
     }
 }

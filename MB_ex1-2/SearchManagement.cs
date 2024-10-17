@@ -1,5 +1,4 @@
 namespace MB_ex1;
-
 public class SearchManagement:Management
 {
     public override void ShowMenu()
@@ -16,6 +15,7 @@ public class SearchManagement:Management
         while (true)    
         {
             ShowMenu();
+            Console.Write("Choose an option:");
             int option = int.Parse(Console.ReadLine().Trim());
             switch (option)
             {
@@ -43,21 +43,27 @@ public class SearchManagement:Management
 
     private void BorrowerBorrowBothBookAndDVD()
     {
-        throw new NotImplementedException();
+        var borrower = _db.GetBorrowersBorrowBothBookAndDvd();
+        Console.WriteLine("Borrower borrow both book and DVD");
+        Console.WriteLine("Number of borrowers: "+borrower.Count);
+        ShowItemsInfo(borrower.Cast<object>().ToList());
     }
 
     private void DVDPublicationIn2022()
     {
-        throw new NotImplementedException();
+        var items = _db.GetDVDPublicationIn2022();
+        Console.WriteLine("DVD publication in 2022");
+        Console.WriteLine("Number of DVD: "+items.Count);
+        ShowItemsInfo(items.Cast<object>().ToList());
     }
 
     private void SortBookByTitle()
     {
-        throw new NotImplementedException();
+        ShowItemsInfo(_db.GetAllBooks().OrderBy(item=>item.Title).Cast<object>().ToList());
     }
 
     private void GetAllBooks()
     {
-        ShowItemsInfo(_db.GetAllBooks().Cast<object>().ToList());
+        ShowItemsInfo(_db.GetAllBooks().OrderBy(item=>item.PublicationDate).Cast<object>().ToList());
     }
 }

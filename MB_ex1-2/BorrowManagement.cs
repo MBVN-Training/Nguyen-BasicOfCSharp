@@ -48,19 +48,13 @@ public class BorrowManagement: Management
     private void ShowBorrowers()
     {
         var borrowers= _db.GetBorrowers();
-        foreach (var borrower in borrowers)
-        {
-            Console.WriteLine(borrower);
-        }
+        ShowItemsInfo(borrowers.Cast<Object>().ToList());
     }
 
     private void ShowHistory()
     {
         var histories = _db.GetBorrowingHistories();
-        foreach (var history in histories)
-        {
-            Console.WriteLine(history);
-        }
+        ShowItemsInfo(histories.OrderBy(histories=>histories.BorrowerLibraryCardNumber).Cast<Object>().ToList());
     }
 
     private void ReturnItem()

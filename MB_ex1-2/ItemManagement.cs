@@ -111,6 +111,7 @@ public class ItemManagement: Management
         else
         {
             _db.DeleteLibraryItem(id);
+            Console.WriteLine("delete complete!");
         }
     }
 
@@ -128,6 +129,7 @@ public class ItemManagement: Management
         {
             var item = CreateItem("update");
             _db.UpdateLibraryItem(item);
+            Console.WriteLine("update complete!");
         }
     }
 
@@ -137,6 +139,7 @@ public class ItemManagement: Management
         Console.WriteLine("Add item");
         var item =CreateItem();
         _db.AddLibraryItem(item);
+        Console.WriteLine("Add complete!");
     }
 
     private LibraryItem CreateItem(string action = "add")
@@ -159,27 +162,23 @@ public class ItemManagement: Management
         {
             Console.Write("Type(1.Book, 2.DVD, 3.Magazine):");
             int type = int.Parse(Console.ReadLine().Trim());
-            if (type < 1 || type > 3)
-                throw new Exception("Invalid type");
-
             LibraryItem item = null;
-            if (type == 1)
+            
+            switch (type)
             {
-                Console.Write("Number of pages:");
-                int numberOfPages = int.Parse(Console.ReadLine().Trim());
-                item = new Book(title, author, publicationDate, numberOfPages);
-            }
-
-            if (type == 2)
-            {
-                int runtime = int.Parse(Console.ReadLine().Trim());
-
-                item = new Dvd( title, author, publicationDate, runtime);
-            }
-
-            if (type == 3)
-            {
-                item = new Magazine(title, author, publicationDate);
+                case 1:
+                    Console.Write("Number of pages:");
+                    int numberOfPages = int.Parse(Console.ReadLine().Trim());
+                    item = new Book(title, author, publicationDate, numberOfPages);
+                    break;
+                case 2:
+                    Console.Write("Runtime: ");
+                    int runtime = int.Parse(Console.ReadLine().Trim());
+                    item = new Dvd(title, author, publicationDate, runtime);
+                    break;
+                case 3:
+                    item = new Magazine(title, author, publicationDate);
+                    break;
             }
 
             return item;
