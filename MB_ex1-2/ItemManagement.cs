@@ -29,7 +29,7 @@ public class ItemManagement: Management
         {
             ShowMenu();
             int option = int.Parse(Console.ReadLine().Trim());
-            Console.Clear();
+            // Console.Clear();
             switch (option)
             {
                 case 1:
@@ -128,7 +128,26 @@ public class ItemManagement: Management
         }
         else
         {
-            var item = CreateItem("update");
+            var item = _db.GetLibraryItem(id);
+            Console.WriteLine("Current item:");
+            Console.WriteLine(item);
+            var updatedItem = CreateLibraryItem();
+            item.CopyFrom(updatedItem);
+            switch (item)
+            {
+                case Book book:
+                    Console.Write("Number of pages:");
+                    int numberOfPages = int.Parse(Console.ReadLine().Trim());
+                    book.SetNumberOfPages(numberOfPages);
+                    break;
+                case Dvd dvd:
+                    Console.Write("Runtime:");
+                    int runtime = int.Parse(Console.ReadLine().Trim());
+                    dvd.SetRunTime(runtime);
+                    break;
+                default:
+                    break;
+            }
             _db.UpdateLibraryItem(item);
             Console.WriteLine("update complete!");
         }
@@ -143,44 +162,38 @@ public class ItemManagement: Management
         Console.WriteLine("Add complete!");
     }
 
-    private LibraryItem CreateItem(string action = "add")
+    private LibraryItem CreateLibraryItem()
     {
         Console.Write("Title:");
         string title = Console.ReadLine().Trim();
         Console.Write("Author:");
         string author = Console.ReadLine().Trim();
-        Console.Write("Publication date(dd/MM/yyyy):");
-        DateTime publicationDate = DateTime.Now;
-        try
-        {
-            publicationDate = DateTime.Parse(Console.ReadLine().Trim(),
-                new DateTimeFormatInfo(){ShortDatePattern = "dd/MM/yyyy"});
-        }
-        catch (Exception e)
-        {
-            throw new Exception("Invalid date");
-        }
-        if(action == "add")
-        {
+        Console.Write("Publication date (dd/MM/yyyy): ");
+        DateTime publicationDate = DateTime.ParseExact(Console.ReadLine().Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+        return new LibraryItem(title, author, publicationDate);
+    }
+    private LibraryItem CreateItem()
+    {
+        
+            var item = CreateLibraryItem();
             ChoseType:
             Console.Write("Type(1.Book, 2.DVD, 3.Magazine):");
             int type = int.Parse(Console.ReadLine().Trim());
-            LibraryItem item = null;
-            
+
             switch (type)
             {
                 case 1:
                     Console.Write("Number of pages:");
                     int numberOfPages = int.Parse(Console.ReadLine().Trim());
-                    item = new Book(title, author, publicationDate, numberOfPages);
+                    item = new Book(item, numberOfPages);
                     break;
                 case 2:
                     Console.Write("Runtime: ");
                     int runtime = int.Parse(Console.ReadLine().Trim());
-                    item = new Dvd(title, author, publicationDate, runtime);
+                    item = new Dvd(item, runtime);
                     break;
                 case 3:
-                    item = new Magazine(title, author, publicationDate);
+                    item = new Magazine(item);
                     break;
                 default:
                     Console.Clear();
@@ -188,7 +201,6 @@ public class ItemManagement: Management
             }
 
             return item;
-        }
-        return new LibraryItem( title, author, publicationDate);
+
     }
 }

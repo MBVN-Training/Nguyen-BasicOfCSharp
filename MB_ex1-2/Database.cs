@@ -24,6 +24,9 @@ public class Database
     public List<LibraryItem> GetLibraryItems(){
         return _libraryItems;
     }
+    public LibraryItem GetLibraryItem(Guid id){
+        return _libraryItems.First(item => item.Id == id);
+    }
     public List<Book> GetAllBooks()
     {
         return _libraryItems.OfType<Book>().ToList();

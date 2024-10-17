@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace MB_ex1.Entity;
 
 public class LibraryItem
@@ -20,7 +22,7 @@ public class LibraryItem
 
     public override string ToString()
     {
-        return ("Id: " + Id + " Title: " + Title + " Author: " + Author + " Publication date: " + PublicationDate.ToString("d") + " Is Borrowed: " + IsBorrowed);
+        return ("Id: " + Id + " Title: " + Title + " Author: " + Author + " Publication date: " + PublicationDate.ToString("dd/MM/yyyy") + " Is Borrowed: " + IsBorrowed);
     }
     
     // Method to copy properties from another LibraryItem
