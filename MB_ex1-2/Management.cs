@@ -2,10 +2,25 @@ namespace MB_ex1;
 
 public abstract class Management
 {
-    protected readonly Database? _db=Database.GetInstance();
+    protected readonly Database _db=Database.GetInstance();
     public abstract void ShowMenu();
     public abstract void ChoseOption();
 
+    public void Option()
+    {
+        choice:
+        try
+        {
+            Console.Clear();
+            ChoseOption();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            PauseAndClear();
+            goto choice;
+        }
+    }
     protected static void PauseAndClear()
     {
         Console.WriteLine("Press any key to continue");

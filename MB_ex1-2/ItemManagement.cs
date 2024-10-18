@@ -5,12 +5,8 @@ namespace MB_ex1;
 
 public class ItemManagement: Management
 {
-    
-    public ItemManagement(){}
-
      public override void ShowMenu()
     {
-        Console.Clear();
         Console.WriteLine("Item management");
         Console.WriteLine("1. List items");
         Console.WriteLine("2. List available items");
@@ -28,10 +24,10 @@ public class ItemManagement: Management
         do
         {
             ShowMenu();
-            int option = int.Parse(Console.ReadLine().Trim());
-            // Console.Clear();
+            int.TryParse(Console.ReadLine(),out var option);
+            Console.Clear();
             switch (option)
-            {
+            { 
                 case 1:
                     ListItems();
                     break;
@@ -65,14 +61,13 @@ public class ItemManagement: Management
 
     private void SearchItem()
     {
-        Console.Clear();
         Console.WriteLine("Search item");
         Console.Write("Id:");
-        string id = Console.ReadLine().Trim();
+        string id = Console.ReadLine()?.Trim()??string.Empty;
         Console.Write("Title:");
-        string title = Console.ReadLine().Trim();
+        string title = Console.ReadLine()?.Trim()??string.Empty;
         Console.Write("author:");
-        string author = Console.ReadLine().Trim();
+        string author = Console.ReadLine()?.Trim()??string.Empty;
         
         var listItem = _db.SearchLibraryItems(id, title, author);
         ShowItemsInfo(listItem.ToList());
@@ -92,7 +87,6 @@ public class ItemManagement: Management
 
     private void ListItems()
     {
-        Console.Clear();
         var listItem = _db.GetLibraryItems();
         ShowItemsInfo(listItem.ToList());
         
@@ -101,10 +95,9 @@ public class ItemManagement: Management
 
     private void DeleteItem()
     {
-        Console.Clear();
         Console.WriteLine("Delete item");
         Console.Write("Id:");
-        Guid id = Guid.Parse(Console.ReadLine().Trim());
+        Guid id = Guid.Parse(Console.ReadLine()?.Trim()??throw new Exception("Id is required"));
         if (!_db.IsInLibrary(id))
         {
             throw new Exception("Item not in library");
@@ -118,10 +111,9 @@ public class ItemManagement: Management
 
     private void UpdateItem()
     {
-        Console.Clear();
         Console.WriteLine("Update item");
         Console.Write("Id:");
-        Guid id = Guid.Parse(Console.ReadLine().Trim());
+        Guid id = Guid.Parse(Console.ReadLine()?.Trim()??throw new Exception("Id is required"));
         if (!_db.IsInLibrary(id))
         {
             throw new Exception("Item not in library");
@@ -137,15 +129,13 @@ public class ItemManagement: Management
             {
                 case Book book:
                     Console.Write("Number of pages:");
-                    int numberOfPages = int.Parse(Console.ReadLine().Trim());
+                    int numberOfPages = int.Parse(Console.ReadLine()?.Trim()??"0");
                     book.SetNumberOfPages(numberOfPages);
                     break;
                 case Dvd dvd:
                     Console.Write("Runtime:");
-                    int runtime = int.Parse(Console.ReadLine().Trim());
+                    int runtime = int.Parse(Console.ReadLine()?.Trim()??"0");
                     dvd.SetRunTime(runtime);
-                    break;
-                default:
                     break;
             }
             _db.UpdateLibraryItem(item);
@@ -155,7 +145,6 @@ public class ItemManagement: Management
 
     private void AddItem()
     {
-        Console.Clear();
         Console.WriteLine("Add item");
         var item =CreateItem();
         _db.AddLibraryItem(item);
@@ -165,40 +154,40 @@ public class ItemManagement: Management
     private LibraryItem CreateLibraryItem()
     {
         Console.Write("Title:");
-        string title = Console.ReadLine().Trim();
+        string title = Console.ReadLine()?.Trim()??throw new Exception("Title is required");
         Console.Write("Author:");
-        string author = Console.ReadLine().Trim();
+        string author = Console.ReadLine()?.Trim()??throw new Exception("Author is required");
         Console.Write("Publication date (dd/MM/yyyy): ");
-        DateTime publicationDate = DateTime.ParseExact(Console.ReadLine().Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+        DateTime publicationDate = DateTime.ParseExact(Console.ReadLine()?.Trim()??throw new Exception("publicationDate is required"),
+                                                        "dd/MM/yyyy", CultureInfo.InvariantCulture);
         return new LibraryItem(title, author, publicationDate);
     }
     private LibraryItem CreateItem()
     {
-        
-            var item = CreateLibraryItem();
-            ChoseType:
-            Console.Write("Type(1.Book, 2.DVD, 3.Magazine):");
-            int type = int.Parse(Console.ReadLine().Trim());
+        var item = CreateLibraryItem();
+        ChoseType:
+        Console.Write("Type(1.Book, 2.DVD, 3.Magazine):");
+        int.TryParse(Console.ReadLine(), out var type);
 
-            switch (type)
-            {
-                case 1:
-                    Console.Write("Number of pages:");
-                    int numberOfPages = int.Parse(Console.ReadLine().Trim());
-                    item = new Book(item, numberOfPages);
-                    break;
-                case 2:
-                    Console.Write("Runtime: ");
-                    int runtime = int.Parse(Console.ReadLine().Trim());
-                    item = new Dvd(item, runtime);
-                    break;
-                case 3:
-                    item = new Magazine(item);
-                    break;
-                default:
-                    Console.Clear();
-                    goto ChoseType;
-            }
+        switch (type)
+        {
+            case 1:
+                Console.Write("Number of pages:");
+                int numberOfPages = int.Parse(Console.ReadLine()?.Trim()?? "0");
+                item = new Book(item, numberOfPages);
+                break;
+            case 2:
+                Console.Write("Runtime: ");
+                int runtime = int.Parse(Console.ReadLine()?.Trim()?? "0");
+                item = new Dvd(item, runtime);
+                break;
+            case 3:
+                item = new Magazine(item);
+                break;
+            default:
+                Console.Clear();
+                goto ChoseType;
+        }
 
             return item;
 

@@ -1,6 +1,4 @@
-using System;
 using MB_ex1.Entity;
-using Microsoft.VisualBasic.CompilerServices;
 
 namespace MB_ex1;
 
@@ -14,7 +12,7 @@ public class Database
     private Database(){
         SeedData();
     }
-    public static Database? GetInstance(){
+    public static Database GetInstance(){
         if(_instance is null){
             _instance = new Database();
             
@@ -31,7 +29,7 @@ public class Database
     {
         return _libraryItems.OfType<Book>().ToList();
     }
-    public List<Dvd> GetDVDPublicationIn2022()
+    public List<Dvd> GetDvdPublicationIn2022()
     {
         return _libraryItems.OfType<Dvd>().Where(item=> item.PublicationDate.Year == 2022).ToList();
     }
@@ -66,18 +64,12 @@ public class Database
     public LibraryItem? GetItemInLibrary(Guid? id){
         if(id is null)
             return null;
-        foreach(LibraryItem item in _libraryItems){
-            if(item.Id == id){
-                return item;
-            }
-        }
-        return null;
+        return _libraryItems.FirstOrDefault(item => item.Id == id);
     }
     public void AddLibraryItem(LibraryItem item){
         var itemInLibrary = GetItemInLibrary(item.Id);
         if (itemInLibrary is not null) throw new Exception("Item already exists in library");
         _libraryItems.Add(item);
-        return;
     }
     public void UpdateLibraryItem(LibraryItem item){
         var itemInLibrary = GetItemInLibrary(item.Id);

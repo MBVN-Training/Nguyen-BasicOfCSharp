@@ -1,4 +1,3 @@
-using MB_ex1.Entity;
 
 namespace MB_ex1;
 
@@ -6,6 +5,8 @@ public class BorrowManagement: Management
 {
     public override void ShowMenu()
     {
+        Console.Clear();
+        Console.WriteLine("Borrow Management");
         Console.WriteLine("1. Borrow an item");
         Console.WriteLine("2. Return an item");
         Console.WriteLine("3. borrow history");
@@ -19,7 +20,8 @@ public class BorrowManagement: Management
         do
         {
             ShowMenu();
-            int option = int.Parse(Console.ReadLine().Trim());
+            int.TryParse(Console.ReadLine(), out var option);
+            Console.Clear();
             switch (option)
             {
                 case 1:

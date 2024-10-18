@@ -8,6 +8,7 @@ public class SearchManagement:Management
         Console.WriteLine("3. DVD publication in 2022");
         Console.WriteLine("4. Borrower borrow both book and DVD");
         Console.WriteLine("5. Exit");
+        Console.Write("Choose an option:");
     }
 
     public override void ChoseOption()
@@ -15,8 +16,8 @@ public class SearchManagement:Management
         while (true)    
         {
             ShowMenu();
-            Console.Write("Choose an option:");
-            int option = int.Parse(Console.ReadLine().Trim());
+            int.TryParse(Console.ReadLine(), out var option);
+            Console.Clear();
             switch (option)
             {
                 case 1:
@@ -51,7 +52,7 @@ public class SearchManagement:Management
 
     private void DvdPublicationIn2022()
     {
-        var items = _db.GetDVDPublicationIn2022();
+        var items = _db.GetDvdPublicationIn2022();
         Console.WriteLine("DVD publication in 2022");
         Console.WriteLine("Number of DVD: "+items.Count);
         ShowItemsInfo(items.ToList());
