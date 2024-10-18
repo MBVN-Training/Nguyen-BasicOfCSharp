@@ -10,8 +10,8 @@ public class Database
     private List<LibraryItem> _libraryItems;
     private List<Borrower> _borrowers;
     private List<BorrowingHistory> _borrowingHistories;
-    private Random _random = new Random();
-    public Database(){
+    private readonly Random _random = new Random();
+    private Database(){
         SeedData();
     }
     public static Database? GetInstance(){
@@ -22,7 +22,7 @@ public class Database
         return _instance;
     }
     public List<LibraryItem> GetLibraryItems(){
-        return _libraryItems;
+        return _libraryItems.OrderBy(item => item.GetType().Name).ThenBy(item => item.Id).ToList();
     }
     public LibraryItem GetLibraryItem(Guid id){
         return _libraryItems.First(item => item.Id == id);

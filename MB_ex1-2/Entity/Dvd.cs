@@ -15,6 +15,6 @@ public class Dvd: LibraryItem
 
     public override string ToString()
     {
-        return base.ToString() + " RunTime: " + RunTime+ " Type: DVD ";
+        return base.ToString() + " RunTime: " + RunTime;
     }
 }

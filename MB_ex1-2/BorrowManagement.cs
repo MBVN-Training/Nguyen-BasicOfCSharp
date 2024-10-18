@@ -53,7 +53,7 @@ public class BorrowManagement: Management
     private void ShowHistory()
     {
         var histories = _db.GetBorrowingHistories();
-        ShowItemsInfo(histories.OrderBy(histories=>histories.BorrowerLibraryCardNumber).ToList());
+        ShowItemsInfo(histories.OrderBy(h=>h.BorrowerLibraryCardNumber).ToList());
     }
 
     private void ReturnItem()

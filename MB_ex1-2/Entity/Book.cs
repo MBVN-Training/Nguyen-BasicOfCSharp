@@ -15,6 +15,6 @@ public class Book: LibraryItem
 
     public override string ToString()
     {
-        return base.ToString() + " Number of pages: " + NumberOfPages+" Type: Book";
+        return base.ToString() + " Number of pages: " + NumberOfPages;
     }
 }

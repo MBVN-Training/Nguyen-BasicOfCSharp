@@ -1,15 +1,14 @@
-using System.Globalization;
 
 namespace MB_ex1.Entity;
 
 public class LibraryItem
 {
-    private Random _random = new Random();
-    public Guid? Id { get; private set; }
+    private readonly Random _random = new Random();
+    public Guid? Id { get; }
     public string Title { get; private set; }
     public string Author{ get; private set; }
     public DateTime PublicationDate{ get; private set; }
-    public bool IsBorrowed { get; private set; }=false ;
+    public bool IsBorrowed { get; private set; }
     
     public LibraryItem(string title, string author, DateTime publicationDate){
         Id = Guid.NewGuid();
@@ -22,7 +21,7 @@ public class LibraryItem
 
     public override string ToString()
     {
-        return ("Id: " + Id + " Title: " + Title + " Author: " + Author + " Publication date: " + PublicationDate.ToString("dd/MM/yyyy") + " Is Borrowed: " + IsBorrowed);
+        return ("Type: "+ this.GetType().Name+ " Id: " + Id + " Title: " + Title + " Author: " + Author + " Publication date: " + PublicationDate.ToString("dd/MM/yyyy") + " Is Borrowed: " + IsBorrowed);
     }
     
     // Method to copy properties from another LibraryItem

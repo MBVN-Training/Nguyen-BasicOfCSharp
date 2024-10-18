@@ -26,10 +26,10 @@ public class SearchManagement:Management
                     SortBookByTitle();
                     break;
                 case 3:
-                    DVDPublicationIn2022();
+                    DvdPublicationIn2022();
                     break;
                 case 4:
-                    BorrowerBorrowBothBookAndDVD();
+                    BorrowerBorrowBothBookAndDvd();
                     break;
                 case 5:
                     return;
@@ -41,7 +41,7 @@ public class SearchManagement:Management
         }
     }
 
-    private void BorrowerBorrowBothBookAndDVD()
+    private void BorrowerBorrowBothBookAndDvd()
     {
         var borrower = _db.GetBorrowersBorrowBothBookAndDvd();
         Console.WriteLine("Borrower borrow both book and DVD");
@@ -49,7 +49,7 @@ public class SearchManagement:Management
         ShowItemsInfo(borrower.ToList());
     }
 
-    private void DVDPublicationIn2022()
+    private void DvdPublicationIn2022()
     {
         var items = _db.GetDVDPublicationIn2022();
         Console.WriteLine("DVD publication in 2022");

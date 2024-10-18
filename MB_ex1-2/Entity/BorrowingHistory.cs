@@ -2,7 +2,7 @@ namespace MB_ex1.Entity;
 
 public class BorrowingHistory
 {
-    public Guid? Id { get; private set; } = Guid.NewGuid();
+    private Guid? Id { get; } = Guid.NewGuid();
     public int? BorrowerLibraryCardNumber{ get; private set; } 
     public DateTime? BorrowDate{ get; private set; }
     public DateTime? ReturnDate{ get; private set; }

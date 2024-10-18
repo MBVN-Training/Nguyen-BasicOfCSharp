@@ -5,7 +5,6 @@ internal class Program
 {
     public static void Main(string[] args)
     {
-        var db = new Database();
         var itemManagement = new ItemManagement();
         var borrowManagement = new BorrowManagement();
         var searchManagement = new SearchManagement();
