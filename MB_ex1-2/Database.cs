@@ -5,9 +5,9 @@ namespace MB_ex1;
 public class Database
 {
     private static Database? _instance;
-    private List<LibraryItem> _libraryItems;
-    private List<Borrower> _borrowers;
-    private List<BorrowingHistory> _borrowingHistories;
+    private List<LibraryItem> _libraryItems= new List<LibraryItem>();
+    private List<Borrower> _borrowers = new List<Borrower>();
+    private List<BorrowingHistory> _borrowingHistories = new List<BorrowingHistory>();
     private readonly Random _random = new Random();
     private Database(){
         SeedData();
@@ -69,6 +69,7 @@ public class Database
     public void AddLibraryItem(LibraryItem item){
         var itemInLibrary = GetItemInLibrary(item.Id);
         if (itemInLibrary is not null) throw new Exception("Item already exists in library");
+        item.Return();
         _libraryItems.Add(item);
     }
     public void UpdateLibraryItem(LibraryItem item){
@@ -87,25 +88,24 @@ public class Database
         return _libraryItems.Exists(item => item.Id == id);
     }
     public void BorrowItem(Guid idItem, int borrowerLibraryCardNumber, DateTime borrowDate){
-        if(!IsInLibrary(idItem))
-            throw new Exception("Item not in library");
-        
         if(!_borrowers.Exists(borrower => borrower.LibraryCardNumber == borrowerLibraryCardNumber))
             throw new Exception("Borrower not found");
-        else
+        var item = GetItemInLibrary(idItem);
+        if (item is null )
         {
-            var item = GetItemInLibrary(idItem);
-            if(item.IsBorrowed){
-                throw new Exception("Item already borrowed");
-            }
-            item.Borrow();
-            _borrowingHistories.Add(new BorrowingHistory( idItem, borrowerLibraryCardNumber, borrowDate));
+            throw new Exception("item not found");
         }
+        if(item.IsBorrowed){
+            throw new Exception("Item already borrowed");
+        }
+        item.Borrow();
+        _borrowingHistories.Add(new BorrowingHistory( idItem, borrowerLibraryCardNumber, borrowDate));
     }
     public void ReturnItem(Guid idItem, int borrowerLibraryCardNumber, DateTime returnDate){
-        if(!IsInLibrary(idItem))
-            throw new Exception("Item not in library");
         var item = GetItemInLibrary(idItem);
+        if(item is null){
+            throw new Exception("Item not found");
+        }
         if(!item.IsBorrowed){
             throw new Exception("Item not borrowed");
         }
@@ -116,21 +116,18 @@ public class Database
         item.Return();
         history.ReturnItem(returnDate);
     }
-    public List<LibraryItem> GetAvailableLibaryItems(){
+    public List<LibraryItem> GetAvailableLibraryItems(){
         return _libraryItems.FindAll(item => !item.IsBorrowed);
     }
-    public List<LibraryItem> GetBorrowedLibaryItems(){
+    public List<LibraryItem> GetBorrowedLibraryItems(){
         return _libraryItems.FindAll(item => item.IsBorrowed);
     }
     public List<LibraryItem> SearchLibraryItems(string id,string title, string author)
     {
-        return _libraryItems.FindAll(item=> item.Title.Contains(title)|| item.Author.Contains(author) || item.Id.ToString().Contains(id));
+        return _libraryItems.FindAll(item=> item.Title.Contains(title)|| item.Author.Contains(author) || (item.Id?.ToString() ?? "").Contains(id));
     }
 ////seed data
     private void SeedData(){
-        _libraryItems = new List<LibraryItem>();
-        _borrowers = new List<Borrower>();
-        _borrowingHistories = new List<BorrowingHistory>();
         int numberOfItems = 10;
         int numberOfBorrowers = 5;
         for(int i = 0; i < numberOfItems; i++){
@@ -151,7 +148,7 @@ public class Database
         {
             if (item.IsBorrowed)
             {
-                _borrowingHistories.Add(new BorrowingHistory(item.Id.Value, _borrowers[_random.Next(0,_borrowers.Count)].LibraryCardNumber.Value, DateTime.Now.AddDays(_random.Next(-50,50))));
+                _borrowingHistories.Add(new BorrowingHistory(item.Id, _borrowers[_random.Next(0,_borrowers.Count)].LibraryCardNumber, DateTime.Now.AddDays(_random.Next(-50,50))));
             }
         }
     }

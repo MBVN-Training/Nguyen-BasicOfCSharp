@@ -2,7 +2,7 @@ namespace MB_ex1;
 
 public abstract class Management
 {
-    protected readonly Database _db=Database.GetInstance();
+    protected readonly Database Db=Database.GetInstance();
     public abstract void ShowMenu();
     public abstract void ChoseOption();
 

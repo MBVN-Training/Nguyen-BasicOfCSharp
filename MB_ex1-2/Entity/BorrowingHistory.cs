@@ -7,7 +7,7 @@ public class BorrowingHistory
     public DateTime? BorrowDate{ get; private set; }
     public DateTime? ReturnDate{ get; private set; }
     public Guid? IdItem{ get; private set; }
-    public BorrowingHistory( Guid idItem,int borrowerLibraryCardNumber, DateTime borrowDate){
+    public BorrowingHistory( Guid? idItem,int? borrowerLibraryCardNumber, DateTime? borrowDate){
         IdItem = idItem;
         BorrowerLibraryCardNumber = borrowerLibraryCardNumber;
         BorrowDate = borrowDate;

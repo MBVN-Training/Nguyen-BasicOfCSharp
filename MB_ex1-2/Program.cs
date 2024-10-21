@@ -33,7 +33,7 @@ internal class Program
                 case 4:
                     Console.WriteLine("Goodbye!");
                     //exit the program after 1 seconds
-                    System.Threading.Thread.Sleep(1000);
+                    Thread.Sleep(1000);
                     return;
                 default:
                     Console.WriteLine("Invalid option");

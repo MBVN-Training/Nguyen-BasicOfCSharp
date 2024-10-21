@@ -3,6 +3,7 @@ using MB_ex1.Entity;
 
 namespace MB_ex1;
 
+
 public class ItemManagement: Management
 {
      public override void ShowMenu()
@@ -69,25 +70,25 @@ public class ItemManagement: Management
         Console.Write("author:");
         string author = Console.ReadLine()?.Trim()??string.Empty;
         
-        var listItem = _db.SearchLibraryItems(id, title, author);
+        var listItem = Db.SearchLibraryItems(id, title, author);
         ShowItemsInfo(listItem.ToList());
     }
 
     private void ListBorrowedItems()
     {
-        var list = _db.GetBorrowedLibaryItems();
+        var list = Db.GetBorrowedLibraryItems();
         ShowItemsInfo(list.ToList());
     }
 
     private void ListAvailableItems()
     {
-        var listItem = _db.GetAvailableLibaryItems();
+        var listItem = Db.GetAvailableLibraryItems();
         ShowItemsInfo(listItem.ToList());
     }
 
     private void ListItems()
     {
-        var listItem = _db.GetLibraryItems();
+        var listItem = Db.GetLibraryItems();
         ShowItemsInfo(listItem.ToList());
         
     }
@@ -98,13 +99,13 @@ public class ItemManagement: Management
         Console.WriteLine("Delete item");
         Console.Write("Id:");
         Guid id = Guid.Parse(Console.ReadLine()?.Trim()??throw new Exception("Id is required"));
-        if (!_db.IsInLibrary(id))
+        if (!Db.IsInLibrary(id))
         {
             throw new Exception("Item not in library");
         }
         else
         {
-            _db.DeleteLibraryItem(id);
+            Db.DeleteLibraryItem(id);
             Console.WriteLine("delete complete!");
         }
     }
@@ -114,13 +115,13 @@ public class ItemManagement: Management
         Console.WriteLine("Update item");
         Console.Write("Id:");
         Guid id = Guid.Parse(Console.ReadLine()?.Trim()??throw new Exception("Id is required"));
-        if (!_db.IsInLibrary(id))
+        if (!Db.IsInLibrary(id))
         {
             throw new Exception("Item not in library");
         }
         else
         {
-            var item = _db.GetLibraryItem(id);
+            var item = Db.GetLibraryItem(id);
             Console.WriteLine("Current item:");
             Console.WriteLine(item);
             var updatedItem = CreateLibraryItem();
@@ -138,7 +139,7 @@ public class ItemManagement: Management
                     dvd.SetRunTime(runtime);
                     break;
             }
-            _db.UpdateLibraryItem(item);
+            Db.UpdateLibraryItem(item);
             Console.WriteLine("update complete!");
         }
     }
@@ -147,7 +148,7 @@ public class ItemManagement: Management
     {
         Console.WriteLine("Add item");
         var item =CreateItem();
-        _db.AddLibraryItem(item);
+        Db.AddLibraryItem(item);
         Console.WriteLine("Add complete!");
     }
 
@@ -188,8 +189,6 @@ public class ItemManagement: Management
                 Console.Clear();
                 goto ChoseType;
         }
-
             return item;
-
     }
 }

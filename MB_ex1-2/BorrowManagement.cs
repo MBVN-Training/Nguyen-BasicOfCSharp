@@ -48,36 +48,36 @@ public class BorrowManagement: Management
     
     private void ShowBorrowers()
     {
-        var borrowers= _db.GetBorrowers();
+        var borrowers= Db.GetBorrowers();
         ShowItemsInfo(borrowers.ToList());
     }
 
     private void ShowHistory()
     {
-        var histories = _db.GetBorrowingHistories();
+        var histories = Db.GetBorrowingHistories();
         ShowItemsInfo(histories.OrderBy(h=>h.BorrowerLibraryCardNumber).ToList());
     }
 
     private void ReturnItem()
     {
         Console.WriteLine("Enter your library card number:");
-        int libraryCardNumber = int.Parse(Console.ReadLine().Trim());
+        int libraryCardNumber = int.Parse(Console.ReadLine()?.Trim()??string.Empty);
         Console.WriteLine("Enter the item id:");
-        Guid itemId = Guid.Parse(Console.ReadLine().Trim());
-        _db.ReturnItem(itemId, libraryCardNumber, DateTime.Now);
+        Guid itemId = Guid.Parse(Console.ReadLine()?.Trim()??string.Empty);
+        Db.ReturnItem(itemId, libraryCardNumber, DateTime.Now);
         Console.WriteLine("Item returned successfully");
     }
 
     private void BorrowItem()
     {
         Console.WriteLine("Enter your library card number:");
-        int libraryCardNumber = int.Parse(Console.ReadLine().Trim());
+        int libraryCardNumber = int.Parse(Console.ReadLine()?.Trim()??string.Empty);
         Console.WriteLine("list available items:");
-        var listItem = _db.GetAvailableLibaryItems();
+        var listItem = Db.GetAvailableLibraryItems();
         ShowItemsInfo(listItem.ToList());
         Console.WriteLine("Enter the item id:");
-        Guid itemId = Guid.Parse(Console.ReadLine().Trim());
-        _db.BorrowItem(itemId, libraryCardNumber, DateTime.Now);
+        Guid itemId = Guid.Parse(Console.ReadLine()?.Trim()??string.Empty);
+        Db.BorrowItem(itemId, libraryCardNumber, DateTime.Now);
         Console.WriteLine("Item borrowed successfully");
     }
 }
